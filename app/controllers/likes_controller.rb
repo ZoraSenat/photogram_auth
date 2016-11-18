@@ -12,7 +12,7 @@ class LikesController < ApplicationController
   end
 
   def my_likes
-    @likes = Like.all.where(user_id = current_user.id)
+    @likes = current_user.likes
 
     render("my_likes.html.erb")
   end
