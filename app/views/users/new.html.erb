@@ -1,0 +1,62 @@
+<!-- Validation failure messages -->
+<% if @user.errors.any? %>
+  <% @user.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Add User</h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/create_user" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for email address -->
+      <div class="form-group">
+        <label for="email" class="control-label">
+          Email
+        </label>
+
+        <input type="text" id="email" name="email" placeholder="Email Address" class="form-control" rows="3"><%= @user.email %></input>
+      </div>
+
+      <!-- Label and input for user name -->
+      <div class="form-group">
+        <label for="username" class="control-label">
+          User Name
+        </label>
+
+        <input type="text" id="username" name="username" placeholder="User Name" class="form-control" rows="3"><%= @user.username %></input>
+      </div>
+
+      <!-- Label and input for password -->
+      <div class="form-group">
+        <label for="password" class="control-label">
+          Password
+        </label>
+
+        <input type="password" id="password" name="password" placeholder="Password" class="form-control" rows="3"><%= @user.password %></input>
+      </div>
+
+
+      <!-- Label and input for user_id -->
+      <div class="form-group">
+        <input type="hidden" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= current_user.id %>">
+      </div>
+      </div>
+
+      <button class="btn btn-success">
+        Create User
+      </button>
+      or
+      <a href="/users">Cancel</a>
+    </form>
+  </div>
+</div>
