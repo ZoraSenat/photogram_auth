@@ -1,50 +1,53 @@
-<div class="page-header">
-  <h3>Photo #<%= @photo.id %></h3>
-</div>
-
-<div class="container">
+<div class="container pt-2">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="panel panel-default">
         <div class="panel-heading">
+
           <div class="panel-title">
-            <a href=""><%= @photo.user_id %></a>
-            about <%= time_ago_in_words(@photo.created_at) %> ago
+            <h5><a href="/users/<%=@photo.user_id %>"><%=@photo.user.username %></a> <small> <%= time_ago_in_words(@photo.created_at)%> ago</small></h5>
           </div>
+
         </div>
+
         <div class="panel-body">
           <img src="<%= @photo.image %>" class="img-responsive">
           <p> </p>
           <a href="/"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
           <p> </p>
 
-          <% Comment.where(:photo_id => @photo.id).each do |comment|%>
           <ul class="list-unstyled">
-            <li> <a href="/users/<%=comment.user_id %>"><%=comment.user_id %></a> <%=time_ago_in_words(comment.created_at) %> ago
-            <p></p><%=comment.body %></li><p></p>
-                        <%end%>
+            <li> <a href="/users/<%=@photo.user_id %>"><%= @photo.user.username %></a><span class="text-muted"> <small><%=time_ago_in_words(@photo.created_at) %> ago</small></span>
+              <p></p><span class="text-muted"><%= @photo.caption %></span></li>  <p></p>
+
+              <% Comment.where(:photo_id => @photo.id).each do |comment|%>
+              <li> <a href="/users/<%=comment.user_id %>"><%=comment.user.username %></a><span class="text-muted"> <small><%=time_ago_in_words(comment.created_at) %> ago</small></span>
+                <p></p><span class="text-muted"><%=comment.body %></li></span><p></p>
+                <%end%>
+                <li>
+
+                  <form action="/create_comment" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+                    <input type="text" id="body" name="body" class="form-control" placeholder="Add a comment...">
+
+                    <input type="hidden" id="user_id" name="user_id" class="form-control" value="<%= current_user.id %>">
+
+                    <input type="hidden" id="photo_id" name="photo_id" class="form-control" value="<%= @photo.id %>">
+
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>Caption</dt>
-      <dd><%= @photo.caption %></dd>
 
-      <dt>Image</dt>
-      <dd><%= @photo.image %></dd>
-
-      <dt>User</dt>
-      <dd><%= @photo.user_id %></dd>
-
-    </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/photos" class="btn btn-primary">
+    <div class="btn-group btn-group-justified pt-2 pb-4">
+      <a href="/photos" class="btn btn-primary text-center">
         Back
       </a>
       <% if @photo.user_id != current_user.id %>
@@ -53,6 +56,7 @@
         Edit
       </a>
       <%end%>
+
       <% if @photo.user_id != current_user.id %>
       <%else%>
       <a href="/delete_photo/<%= @photo.id %>" class="btn btn-danger" rel="nofollow">
