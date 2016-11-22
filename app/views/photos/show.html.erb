@@ -2,6 +2,33 @@
   <h3>Photo #<%= @photo.id %></h3>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <a href=""><%= @photo.user_id %></a>
+            about <%= time_ago_in_words(@photo.created_at) %> ago
+          </div>
+        </div>
+        <div class="panel-body">
+          <img src="<%= @photo.image %>" class="img-responsive">
+          <p> </p>
+          <a href="/"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+          <p> </p>
+
+          <% Comment.where(:photo_id => @photo.id).each do |comment|%>
+          <ul class="list-unstyled">
+            <li> <a href="/users/<%=comment.user_id %>"><%=comment.user_id %></a> <%=time_ago_in_words(comment.created_at) %> ago
+            <p></p><%=comment.body %></li><p></p>
+                        <%end%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-12 mb-2">
     <dl class="dl-horizontal">
@@ -20,12 +47,18 @@
       <a href="/photos" class="btn btn-primary">
         Back
       </a>
+      <% if @photo.user_id != current_user.id %>
+      <%else%>
       <a href="/photos/<%= @photo.id %>/edit" class="btn btn-warning">
         Edit
       </a>
+      <%end%>
+      <% if @photo.user_id != current_user.id %>
+      <%else%>
       <a href="/delete_photo/<%= @photo.id %>" class="btn btn-danger" rel="nofollow">
         Delete
       </a>
+      <%end%>
     </div>
   </div>
 </div>

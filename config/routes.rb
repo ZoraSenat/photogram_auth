@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+"photos#index"
+
   # Routes for the Comment resource:
 
   # CREATE
