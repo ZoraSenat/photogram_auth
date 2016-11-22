@@ -1,14 +1,20 @@
 class PhotosController < ApplicationController
   def index
-    @photos = Photo.all
+    @photos = Photo.all.order(created_at: :desc)
 
     render("photos/index.html.erb")
   end
 
   def show
     @photo = Photo.find(params[:id])
-    
+
     render("photos/show.html.erb")
+  end
+
+  def my_wall
+    @photos = current_user.photos.order(created_at: :desc)
+
+    render("my_wall.html.erb")
   end
 
   def new

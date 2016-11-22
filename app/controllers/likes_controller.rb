@@ -12,7 +12,7 @@ class LikesController < ApplicationController
   end
 
   def my_likes
-    @likes = current_user.likes
+    @likes = current_user.likes.order(created_at: :desc)
 
     render("my_likes.html.erb")
   end
@@ -31,7 +31,7 @@ class LikesController < ApplicationController
     save_status = @like.save
 
     if save_status == true
-      redirect_to("/likes/#{@like.id}", :notice => "Like created successfully.")
+      redirect_to( :back, :notice => "Like created successfully.")
     else
       render("likes/new.html.erb")
     end
@@ -59,7 +59,7 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    @like = Like.find(params[:id])
+    @like = Like.where(:user_id => params[:current_user]).where(:photo_id =>params[:photo_id]).first
 
     @like.destroy
 
