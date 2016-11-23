@@ -44,11 +44,11 @@ class PhotosController < ApplicationController
     if @photo.user_id == current_user.id
 
 
-    render("photos/edit.html.erb")
+      render("photos/edit.html.erb")
 
-  else
-redirect_to("/", :notice => "You do not have access to view this page.")
-  end
+    else
+      redirect_to("/", :notice => "You do not have access to view this page.")
+    end
   end
 
   def update
@@ -70,12 +70,17 @@ redirect_to("/", :notice => "You do not have access to view this page.")
   def destroy
     @photo = Photo.find(params[:id])
 
-    @photo.destroy
+    if @photo.user_id != current_user.id
 
-    if URI(request.referer).path == "/photos/#{@photo.id}"
+      redirect_to("/", :notice => "You do not have access to view this page.")
+
+    else if
+      @photo.destroy
+      URI(request.referer).path == "/photos/#{@photo.id}"
       redirect_to("/", :notice => "Photo deleted.")
     else
       redirect_to(:back, :notice => "Photo deleted.")
     end
   end
+end
 end
