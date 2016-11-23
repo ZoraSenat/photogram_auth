@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 
   has_many :comments
 
-  has_many :likes
+  has_many(:likes, :class_name => "Like", :foreign_key => "user_id")
 
   has_many :liked_photos, :through => :likes, :source => :photo
 
