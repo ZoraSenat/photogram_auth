@@ -41,8 +41,14 @@ class PhotosController < ApplicationController
 
   def edit
     @photo = Photo.find(params[:id])
+    if @photo.user_id == current_user.id
+
 
     render("photos/edit.html.erb")
+
+  else
+redirect_to("/", :notice => "You do not have access to view this page.")
+  end
   end
 
   def update
