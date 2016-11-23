@@ -1,11 +1,11 @@
 <div class="container">
-    <div class="row pt-2">
-      <div class="col-md-8 col-md-offset-2">
-        <a class="btn btn-default btn-block" href="/photos/new" class="btn btn-lg btn-success"><i class="fa fa-plus" aria-hidden="true"></i></a>
-      </div>
+  <div class="row pt-2">
+    <div class="col-md-8 col-md-offset-2">
+      <a class="btn btn-default btn-block" href="/photos/new" class="btn btn-lg btn-success"><i class="fa fa-plus" aria-hidden="true"></i></a>
     </div>
+  </div>
 
-    <hr>
+  <hr>
   <% @photos.each do |photo| %>
 
   <div class="row">
@@ -72,14 +72,25 @@
 
                     <input type="hidden" id="user_id" name="user_id" class="form-control" value="<%= current_user.id %>">
 
-                    <input type="hidden" id="photo_id" name="photo_id" class="form-control" value="<%= photo.id %>">
+                    <input type="hidden" id="photo_id" name="photo_id" class="form-control" value="<%= photo.id %>">  </li>
+                  </ul>
 
-                  </form>
-                </li>
-              </ul>
+                  <div class="btn-group btn-group-justified pt-2 pb-4">
+                    <% if photo.user_id != current_user.id %>
+                    <%else%>
+                    <a href="/photos/<%= photo.id %>/edit" class="btn btn-warning">
+                      Edit
+                    </a>
+
+                    <a href="/delete_photo/<%= photo.id %>" class="btn btn-danger" rel="nofollow">
+                      Delete
+                    </a>
+                    <%end%>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+        <%end%>
       </div>
-      <%end%>
-    </div>
